@@ -1,0 +1,52 @@
+
+Provider {
+	id integer pk increments
+	name text
+	adress text
+	idProviderProduct integer > ProviderProduct.id
+}
+
+Customer {
+	id integer pk increments
+	name text
+	adress text
+}
+
+ProviderProduct {
+	id integer pk increments
+	idProduct integer > Prodict.id
+	price float
+	amount integer
+}
+
+LogBook {
+	id integer pk increments
+	idProduct integer > Prodict.id
+	idProvider integer > Provider.id
+	idCustomer integer > Customer.id
+	count integer
+	price float
+}
+
+Prodict {
+	id integer pk increments
+	name text
+	idCategory integer > Category.id
+	isSubCategory integer > SubCategory.id
+	idType integer > TypeProduct.id
+}
+
+Category {
+	id integer pk increments
+	name text
+}
+
+SubCategory {
+	id integer pk increments
+	name text
+}
+
+TypeProduct {
+	id integer pk increments
+	name text
+}

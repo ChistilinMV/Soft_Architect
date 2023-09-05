@@ -1,0 +1,59 @@
+CREATE TABLE Provider (
+  id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  name TEXT NOT NULL,
+  adress TEXT NOT NULL,
+  idProviderProduct INT NOT NULL,
+  FOREIGN KEY (idProviderProduct) REFERENCES ProviderProduct(id)
+);
+
+CREATE TABLE Customer (
+  id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  name TEXT NOT NULL,
+  adress TEXT NOT NULL
+);
+
+CREATE TABLE ProviderProduct (
+  id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  idProduct INT NOT NULL,
+  price FLOAT NOT NULL,
+  amount INT NOT NULL,
+  FOREIGN KEY (idProduct) REFERENCES Prodict(id)
+);
+
+CREATE TABLE LogBook (
+  id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  idProduct INT NOT NULL,
+  idProvider INT NOT NULL,
+  idCustomer INT NOT NULL,
+  count INT NOT NULL,
+  price FLOAT NOT NULL,
+  FOREIGN KEY (idProduct) REFERENCES Prodict(id),
+  FOREIGN KEY (idProvider) REFERENCES Provider(id),
+  FOREIGN KEY (idCustomer) REFERENCES Customer(id)
+);
+
+CREATE TABLE Prodict (
+  id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  name TEXT NOT NULL,
+  idCategory INT NOT NULL,
+  isSubCategory INT NOT NULL,
+  idType INT NOT NULL,
+  FOREIGN KEY (idCategory) REFERENCES Category(id),
+  FOREIGN KEY (isSubCategory) REFERENCES SubCategory(id),
+  FOREIGN KEY (idType) REFERENCES TypeProduct(id)
+);
+
+CREATE TABLE Category (
+  id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  name TEXT NOT NULL
+);
+
+CREATE TABLE SubCategory (
+  id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  name TEXT NOT NULL
+);
+
+CREATE TABLE TypeProduct (
+  id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  name TEXT NOT NULL
+);
