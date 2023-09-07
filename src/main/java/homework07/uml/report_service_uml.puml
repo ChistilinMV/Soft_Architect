@@ -1,0 +1,136 @@
+@startuml SPA wholesale report service
+
+package "Model" <<rectangle>> {
+  class CustomerModel {
+    + customer_id : int
+    + name : string
+    + address : string
+    + phone_number : string
+    + email : string
+    + created_at : timestamp
+  }
+
+  class OrderItemModel {
+    + order_item_id : int
+    + order_id : int
+    + product_id : int
+    + quantity : int
+    + price : decimal
+  }
+
+  class OrderModel {
+    + order_id : int
+    + customer_id : int
+    + order_date : date
+    + total_amount : decimal
+    + order_items: List<OrderItem>
+  }
+
+  class ProductModel {
+    + product_id : int
+    + name : string
+    + price : decimal
+    + supplier_id : int
+  }
+
+  class SupplierModel {
+    + supplier_id : int
+    + name : string
+    + address : string
+    + phone_number : string
+    + email : string
+    + created_at : timestamp
+  }
+
+  CustomerModel --* OrderModel
+  OrderModel o-- OrderItemModel
+  ProductModel --* OrderItemModel
+  SupplierModel --* ProductModel
+}
+package "DataLayer" <<database>> {
+  interface ICustomerRepo {
+    getById(id: int): CustomerModel
+    getAll(): List<Customer>
+  }
+  interface IOrdersRepo {
+    getById(orderId: int): Order
+    getOrderItems(orderId: int): List<OrderItemModel>
+    getOrders(*report params*):List<OrderModel>
+  }
+  interface IProductRepo {
+    getById(id: int): Product
+    getAll(): List<ProducModel>
+  }
+  interface ISupplierRepo {
+
+    getById(id: int): Supplier
+    getAll(): Lidt<SupplierModel>
+  }
+
+  class CustomerRepoImpl implements ICustomerRepo {
+
+  }
+  class SuplierRepoImpl implements ISupplierRepo {
+
+  }
+  class ProductRepoImpl implements IProductRepo {
+
+  }
+  class OrdersRepoImpl implements IOrdersRepo {
+
+  }
+}
+
+package "ViewLayer" <<rectangle>> {
+  class View {
+    + startDate : timestamp
+    + endDate: timestamp
+    + supplierComboBox : ComboBox<List<SuplierModel>>
+    + customerComboBox : ComboBox<List<CustomerModel>>
+    + productComboBox : ComboBox<List<ProductModel>>
+    + reportTypeComboBox: ComboBox<ReportTypes>
+    + generateButton : Button
+    + exportButton: Button
+    + reportTableBody: List<OrderModel>
+    + reportDiagramBody: List<OrderModel>
+  }
+
+  enum ReportTypes {
+    table
+    diagram
+  }
+
+  ReportTypes <-- View
+  ' ProductModel <-- View
+  ' SupplierModel <-- View
+  ' CustomerModel <-- View
+  ' OrderModel <-- View
+
+}
+
+package "ControllerLayer" <<rectangle>> {
+  class ViewController {
+    + view: View
+    - ProductRepo: ProductRepoImpl
+    - CustomreRepo: CustomerRepoImpl
+    - SuplierRepoImpl: SuplierRepoImpl
+    - OrdersRepo: OrdersRepoImpl 
+    - handleRenderView(): void
+    - handleDateRangeChange(startDate: Date, endDate: Date): void
+    - handleSupplierChange(supplier: string): void
+    - handleCustomerChange(customer: string): void
+    - handleProductChange(product: string): void
+    - handleReportTypeChange(reportType: string): void
+    - handleGenerateReport(): void
+    - handleSaveXSLX(): void
+  }
+  View --* ViewController
+  ProductRepoImpl --* ViewController
+  SuplierRepoImpl --* ViewController
+  CustomerRepoImpl --* ViewController
+  OrdersRepoImpl --* ViewController
+}
+' ModelLayer <-[dashed]- ViewLayer
+Model --* DataLayer
+
+@enduml
