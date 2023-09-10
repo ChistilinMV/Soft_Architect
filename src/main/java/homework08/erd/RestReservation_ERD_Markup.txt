@@ -1,0 +1,37 @@
+Customer {
+	id integer pk increments
+	name text
+	phone text
+}
+
+BookingLog {
+	id integer pk increments
+	idTable integer > Table.id
+	idCustomer integer > Customer.id
+	date datetime
+	countCustomer integer
+}
+
+Table {
+	id integer pk increments
+	datestart date
+	dateend date
+	countClients integer
+	idImage integer > Image.id
+	idHall integer > Hall.id
+}
+
+Image {
+	id integer pk increments
+	image blob
+}
+
+Hall {
+	id integer pk increments
+	spec integer > Spec.id
+}
+
+Spec {
+	id integer pk increments
+	type text
+}
