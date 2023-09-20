@@ -25,3 +25,18 @@ RobotAndUser {
 	idRobot integer > Robot.id
 	idUser integer > User.id
 }
+
+Robot_State {
+	id integer pk increments
+	garbage_filling integer
+	dust_filling integer
+	battery integer
+	brush_replace integer
+	id_robot integer > Robot.id
+}
+
+Token {
+	id integer pk increments
+	token varchar
+	idRobot integer > Robot.id
+}
